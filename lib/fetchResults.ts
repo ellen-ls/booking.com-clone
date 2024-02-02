@@ -1,4 +1,5 @@
 import { SearchParams } from "@/app/search/page";
+import { Result } from "@/typing";
 
 export async function fetchResults(searchParams: SearchParams){
     const username = process.env.OXYLABS_USERNAME;
@@ -123,4 +124,27 @@ export async function fetchResults(searchParams: SearchParams){
             },
         }
       }
+
+      const response = await fetch("https://realtime.oxylabs.io/v1/queries",{
+        method: "POST",
+        body: JSON.stringify(body),
+        next:{
+          revalidate: 60 * 60,
+        },
+        headers:{
+         "Content-Type": "application/json",
+         Authorization: "Basic" + Buffer.from(`${username}: ${password}`).toString("base64"),
+        },
+        
+      })
+      .then((response)=> response.json())
+      .then((data)=>{
+        if(data.results.length === 0) return;
+        const result: Result = data.results[0]
+
+        return result
+      })
+      .catch((err)=> console.log(err));
+
+      return response;
 }

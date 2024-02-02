@@ -85,7 +85,7 @@ function SearchForm() {
 
         router.push(`/search?url=${url.href}`);
   
-
+        console.log (values)
 }
 return (
     <Form {...form}>
