@@ -8,9 +8,9 @@ export async function fetchResults(searchParams: SearchParams){
     const url = new URL(searchParams.url);
     Object.keys(searchParams).forEach((key) => {
         if (key === "url" || key === "location") return;
-    
+
         const value = searchParams[key as keyof SearchParams];
-    
+
         if (typeof value === "string") {
           url.searchParams.append(key, value);
         }
@@ -135,9 +135,12 @@ export async function fetchResults(searchParams: SearchParams){
          "Content-Type": "application/json",
          Authorization: "Basic" + Buffer.from(`${username}: ${password}`).toString("base64"),
         },
-        
+
       })
-      .then((response)=> response.json())
+      .then((response)=> {
+        if(!response.ok) throw new Error(response.statusText);
+        return response.json()
+      })
       .then((data)=>{
         if(data.results.length === 0) return;
         const result: Result = data.results[0]
