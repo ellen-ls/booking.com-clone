@@ -13,7 +13,7 @@ export type Listing = {
 
 export type Result = {
     content:{
-        listing: Listing[];
+        listings: Listing[];
         total_listings: string;
     }
 }

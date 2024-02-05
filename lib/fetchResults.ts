@@ -19,9 +19,9 @@ export async function fetchResults(searchParams: SearchParams){
       const body = {
         source: "universal",
         url: url.href,
-        parse:true,
-        render:"html",
-        parsing_instructions:{
+        parse: true,
+        render: "html",
+        parsing_instructions: {
             listings: {
                 _fns: [
                   {
@@ -122,7 +122,12 @@ export async function fetchResults(searchParams: SearchParams){
                   },
                 ],
             },
-        }
+          },
+        };
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64'),
       }
 
       const response = await fetch("https://realtime.oxylabs.io/v1/queries",{
@@ -131,10 +136,7 @@ export async function fetchResults(searchParams: SearchParams){
         next:{
           revalidate: 60 * 60,
         },
-        headers:{
-         "Content-Type": "application/json",
-         Authorization: "Basic" + Buffer.from(`${username}: ${password}`).toString("base64"),
-        },
+        headers: headers,
 
       })
       .then((response)=> {
