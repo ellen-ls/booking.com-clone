@@ -116,7 +116,7 @@ export async function fetchResults(searchParams: SearchParams){
                   },
                 },
               },
-            tota_listings: {
+            total_listings: {
                 _fns: [
                   {
                     _fn: "xpath_one",
